@@ -22,8 +22,8 @@ app.get('/feeds', (req, res) => {
     controller.getFeeds(req, res)
 })
 
-app.post('/feed', (req, res) => {
-    controller.saveFeed(req, res)
+app.post('/feed', (req, res, next) => {
+    controller.saveFeed(req, res, next)
 })
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));

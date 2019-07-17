@@ -3,10 +3,16 @@ const parser = new Parser();
 
 const FeedSchema = require("./model");
 
-exports.saveFeed = function(req, res) {
-  const feed = new FeedSchema({ url: req.body.url });
+exports.saveFeed = async function({ body: { url }}, res, next) {
+  try {
+    const feed = await parser.parseURL(url);
+  } catch (error) {
+    return next(error)
+  }
+  
+  const feedSchema = new FeedSchema({ url: url });
 
-  feed.save(function(err, payload) {
+  feedSchema.save(function(err, payload) {
     if (err) {
       throw err;
     }
