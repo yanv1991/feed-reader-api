@@ -1,5 +1,5 @@
 const Parser = require("rss-parser");
-const parser = new Parser();
+const parser = new Parser({ defaultRSS: 2.0 });
 
 const FeedSchema = require("./model");
 
