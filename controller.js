@@ -19,7 +19,26 @@ exports.saveFeed = async function({ body: { url } }, res, next) {
       res.json(feed);
     });
   } catch (error) {
-    res.status(500)
+    res.status(500);
+    return next(error);
+  }
+};
+
+exports.deleteFeed = async function(req, res, next) {
+  const id = req.query.id;
+
+  try {
+    FeedSchema.findByIdAndRemove(id, function(err) {
+      if (err) {
+        return next(err);
+      }
+
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Methods", "GET");
+      res.json({ id });
+    });
+  } catch (error) {
+    res.status(500);
     return next(error);
   }
 };
@@ -43,8 +62,9 @@ exports.getFeeds = function(req, res) {
           res.header("Access-Control-Allow-Methods", "GET");
           // return only the first 6 items
           res.json(
-            response.map(current => ({
+            response.map((current, index) => ({
               ...current,
+              id: payload[index].id,
               items: current.items.slice(0, 10)
             }))
           );

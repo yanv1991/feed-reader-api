@@ -26,4 +26,8 @@ app.post('/feed', (req, res, next) => {
     controller.saveFeed(req, res, next)
 })
 
+app.delete('/feed', (req, res, next) => {
+    controller.deleteFeed(req, res, next)
+})
+
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
